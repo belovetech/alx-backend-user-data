@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regex-ing
+"""Handling user personal data
 """
 import logging
 import re
