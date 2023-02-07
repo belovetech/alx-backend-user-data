@@ -3,7 +3,7 @@
 """
 import base64
 from api.v1.auth.auth import Auth
-from typing import TypeVar
+from typing import TypeVar, Tuple
 from models.user import User
 
 
@@ -45,7 +45,7 @@ class BasicAuth(Auth):
     def extract_user_credentials(
             self,
             decoded_base64_authorization_header:
-            str) -> (str, str):
+            str) -> Tuple[str, str]:
         """ Extract user credentials
         """
         if decoded_base64_authorization_header is None:
@@ -73,3 +73,12 @@ class BasicAuth(Auth):
             if users[0].is_valid_password(user_pwd):
                 return users[0]
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Get the current user
+        """
+        auth_header = self.authorization_header(request)
+        b64_auth_token = self.extract_base64_authorization_header(auth_header)
+        auth_token = self.decode_base64_authorization_header(b64_auth_token)
+        credentials = self.extract_user_credentials(auth_token)
+        return self.user_object_from_credentials(*credentials)
