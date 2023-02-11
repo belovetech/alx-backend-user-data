@@ -129,4 +129,6 @@ def get_me():
     """Retrieve the authenticated User object.
     """
     user = request.current_user
+    if user is None:
+        abort(401)
     return jsonify(user.to_json()), 200
