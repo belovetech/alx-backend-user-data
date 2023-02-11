@@ -20,7 +20,7 @@ class SessionDBAuth(SessionExpAuth):
         kwargs = {'user_id': user_id, 'session_id': session_id}
         user_session = UserSession(**kwargs)
         user_session.save()
-        user_session.save_to_file()
+        UserSession.save_to_file()
 
         return session_id
 
@@ -63,6 +63,6 @@ class SessionDBAuth(SessionExpAuth):
         user_session = user_sessions[0]
         try:
             user_session.remove()
-            user_session.save_to_file()
+            UserSession.save_to_file()
         except Exception:
             return False
