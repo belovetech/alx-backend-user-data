@@ -39,15 +39,13 @@ def login():
     password = request.form.get('password')
 
     try:
-        user = AUTH.valid_login(email, password)
-    except NoResultFound:
-        abort(401)
-    else:
-        if user:
+        if AUTH.valid_login(email, password):
             session_id = AUTH.create_session(email)
             response = jsonify({"email": email, "message": "logged in"})
             response.set_cookie("session_id", session_id)
             return response
+    except NoResultFound:
+        abort(401)
 
 
 if __name__ == "__main__":
