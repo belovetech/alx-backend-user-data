@@ -35,8 +35,11 @@ def users():
 def login():
     """Login user
     """
-    email = request.form.get('email')
-    password = request.form.get('password')
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+    except KeyError:
+        abort(400)
 
     try:
         if AUTH.valid_login(email, password):
@@ -54,8 +57,13 @@ def login():
 def logout():
     """Logout user
     """
-    session_id = request.cookies.get('session_id')
+    session_id = request.cookies.get('session_id', None)
+
+    if session_id is None:
+        abort(403)
+
     user = AUTH.get_user_from_session_id(session_id)
+
     if user:
         AUTH.destroy_session(session_id)
         return redirect('/')
