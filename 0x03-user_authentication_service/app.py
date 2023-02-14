@@ -119,9 +119,9 @@ def update_password():
         AUTH.update_password(reset_token, new_password)
     except ValueError:
         abort(403)
-    else:
-        payload = {"email": email, "message": "Password updated"}
-        return jsonify(payload), 200
+
+    payload = {"email": email, "message": "Password updated"}
+    return jsonify(payload), 200
 
 
 if __name__ == "__main__":
