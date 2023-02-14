@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Basic user flask application
+Basic flask application for User Authentication Service
 """
 from auth import Auth
 from flask import Flask, jsonify, request, abort, redirect
