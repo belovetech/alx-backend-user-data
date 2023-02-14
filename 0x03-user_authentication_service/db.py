@@ -44,7 +44,7 @@ class DB:
         if not kwargs:
             raise InvalidRequestError
 
-        users_columns = User.__table__.columns.keys()
+        users_columns = self.get_users_column()
         for key in kwargs.keys():
             if key not in users_columns:
                 raise InvalidRequestError
@@ -55,3 +55,23 @@ class DB:
             raise NoResultFound
         else:
             return user
+
+    def update_user(self, user_id, **kwargs) -> None:
+        """Update user based on user ID
+        """
+        user = self.find_user_by(id=user_id)
+
+        users_columns = self.get_users_column()
+        for key in kwargs.keys():
+            if key not in users_columns:
+                raise ValueError
+
+        for k, v in kwargs.items():
+            setattr(user, k, v)
+
+        self._session.commit()
+
+    def get_users_column(self):
+        """Get users table columns
+        """
+        return User.__table__.columns.keys()
